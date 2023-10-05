@@ -46,7 +46,7 @@ public class BoardController {
 		return "/board/list"; //내가? 갈곳은 리스트입니당~
 	}
 	
-	@GetMapping({"/detail","/modify"})
+	@GetMapping({"/detail","/modify"})// jsp에서 ? 전까지 잘라서 딱 맞는거 찾음
 	public void detail(Model model, @RequestParam("bno")int bno) { // 이건 왔던 곳으로 다시 가라 라는 뜻
 		log.info(">>>> detail bno >> " + bno);
 		log.info("모디파이나 디테일이 겟을 탐");

@@ -6,3 +6,5 @@
 10월 05, 2023 20:07:23.408 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
 10월 05, 2023 20:40:34.38 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
 10월 05, 2023 21:06:27.684 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+10월 05, 2023 21:38:55.467 [2216:10608:1005/213855.467:ERROR:sharing_service.cc(250)] Device un-registration failed with fatal error
+10월 05, 2023 21:40:37.435 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
