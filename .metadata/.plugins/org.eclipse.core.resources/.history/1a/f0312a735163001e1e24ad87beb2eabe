@@ -1,0 +1,25 @@
+package com.ezen.myProject.controller;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ezen.myProject.service.BoardService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j //로그는 롬복에서 지원함
+@RequestMapping("/board/*")
+@Controller
+public class BoardController {
+
+	@Inject  //new로 객체 생성의미 (autowired써도 됨)  원래 제공하는 건 bean   인젝터나 오토와이더느는 사용자가 의도적으로 만든것 어자피 둘다 같은 의미임
+	private BoardService bsv;
+	
+	@GetMapping("/register")
+	public String boardRegisterGet() {
+		return "/board/register";   //.jsp안써도 됨
+	}
+}

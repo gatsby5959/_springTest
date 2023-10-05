@@ -1,0 +1,13 @@
+package com.ezen.myProject.repository;
+
+import java.util.List;
+
+import com.ezen.myProject.domain.BoardVO;
+
+public interface BoardDAO {
+
+	int insert(BoardVO bvo); // 함수명 자체가 아이디 임
+
+	List<BoardVO> getList();
+
+}

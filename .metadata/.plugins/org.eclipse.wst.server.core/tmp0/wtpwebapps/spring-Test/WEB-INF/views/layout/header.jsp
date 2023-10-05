@@ -45,13 +45,13 @@
           <a class="nav-link" href="#">Log OUT</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">sing up</a>
+          <a class="nav-link" href="#">Sign Up</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">reg</a>
+          <a class="nav-link" href="/board/register">REG</a> <!-- 컨트롤러board의 register로 가라 -->
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">boardlist</a>
+          <a class="nav-link" href="/board/list">Board List</a>
         </li>
       </ul>
       <form class="d-flex" role="search">
