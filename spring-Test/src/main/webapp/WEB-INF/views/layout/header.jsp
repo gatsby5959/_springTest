@@ -21,8 +21,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+        <c:if test="${ses.id eq null}"> 
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
@@ -39,21 +41,47 @@
 <!--           </ul> -->
 <!--         </li> -->
         <li class="nav-item">
-          <a class="nav-link" href="#">Log IN</a>
+          <a class="nav-link" href="/member/login">Log IN</a>
+        </li>
+<!--         <li class="nav-item"> -->
+<!--           <a class="nav-link" href="#">Log OUT</a> -->
+<!--         </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/member/signup">Sign Up</a>
+        </li>
+        
+<!--         <li class="nav-item"> -->
+<!--           <a class="nav-link" href="/board/register">REG</a> 컨트롤러board의 register로 가라 -->
+<!--         </li> -->
+        
+<!--         <li class="nav-item"> -->
+<!--           <a class="nav-link" href="/board/list">Board List</a> -->
+<!--         </li> -->
+      </c:if>
+      
+      <c:if test="${ses.id ne null}"> 
+      <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Log OUT</a>
+          <a class="nav-link" href="#">Link</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Sign Up</a>
-        </li>
+          <a class="nav-link" href="/member/logout">Log OUT</a>
+        </li>  
         <li class="nav-item">
           <a class="nav-link" href="/board/register">REG</a> <!-- 컨트롤러board의 register로 가라 -->
-        </li>
+        </li>     
         <li class="nav-item">
           <a class="nav-link" href="/board/list">Board List</a>
         </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/member/modify"> 접속중인 아이디   ${ses.id}  ,  (이메일: ${ses.email} ) ses.pw  welcome~!!</a>
+		</li>    
       </ul>
+      </c:if>
+      
+      
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>

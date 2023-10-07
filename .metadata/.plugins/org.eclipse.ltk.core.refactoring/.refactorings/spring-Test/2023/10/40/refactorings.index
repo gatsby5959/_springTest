@@ -1,2 +1,5 @@
 1696419565858	Move compilation unit
 1696419882956	Rename resource 'home.jsp'
+1696575564047	Rename resource 'sginup.jsp'
+1696576483680	Rename type 'MembershipService'
+1696579832298	Rename method 'register'

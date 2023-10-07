@@ -1,0 +1,12 @@
+package com.ezen.myProject.domain;
+
+public class MemberVO {
+	private String id;
+	private String id;
+	private String id;
+	private String id;
+	private String id;
+	private String id;
+	private String id;
+	private String id;
+}
