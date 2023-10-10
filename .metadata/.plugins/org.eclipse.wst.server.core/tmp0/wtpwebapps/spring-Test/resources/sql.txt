@@ -56,6 +56,17 @@ registerDate datetime default now(),
 read_count int,
 primary key(bno));
 
+CREATE TABLE `board` (
+  `bno` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) DEFAULT NULL,
+  `content` text,
+  `writer` varchar(100) DEFAULT NULL,
+  `isDel` varchar(10) DEFAULT 'N',
+  `registerDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `read_count` int DEFAULT '0',
+  PRIMARY KEY (`bno`)
+) ENGINE=InnoDB AUTO_INCREMENT=322 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --------------------------------------------------
 
 
@@ -69,3 +80,27 @@ home varchar(100),
 age int,
 reg_date datetime default now(),
 primary key(id));
+
+CREATE TABLE `member` (
+  `id` varchar(100) NOT NULL,
+  `pw` varchar(100) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `home` varchar(100) DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  `reg_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+-----------231010----------------S
+CREATE TABLE comment (
+  cno int NOT NULL AUTO_INCREMENT,
+  bno int NOT NULL,
+  writer varchar(100) ,
+  content varchar(500) ,
+  regdate datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (cno)
+); 
+-----------231010----------------E

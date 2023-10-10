@@ -56,6 +56,40 @@
 
 <a href="/board/list/"><button>리스트</button></a>
 
+<br>
+<br>
+
+<!-- 댓글 라인S -->
+<div>
+	<!-- 댓글 작성 라인 -->
+	<div>
+		<span id="cmtWriter">${ses.id }</span>
+		<input type="text" id="cmtText" placeholder="Add Comment...">
+		<button type="button" id = "cmtPostBtn">댓글등록</button>
+	</div>
+	
+	<!-- 댓글 표시 라인 -->
+	<div>
+		<ul id="cmtListArea">
+			<li>
+				<div>
+					<div>Writer</div>
+					Content
+				</div>
+				<span>reg_date</span>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- 댓글 라인E -->
+
+<script type="text/javascript">
+const bnoVal = `<c:out value = "${bvo.bno}"/>`;
+console.log(bnoVal);
+</script>
+<script type="text/javascript" src="/resources/js/boardComment.js"></script><!-- 해당위치에 넣어주기 -->
+
+
 <jsp:include page="../layout/footer.jsp"></jsp:include>
 
 </body>

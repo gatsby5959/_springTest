@@ -1,0 +1,11 @@
+package com.ezen.myProject;
+
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class) //실행되게 하는 개체
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml") //디비정보가 있는 컨텍스트
+public class BoardTest {
+
+}

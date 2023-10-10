@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ezen.myProject.domain.BoardVO;
+import com.ezen.myProject.domain.PagingVO;
+import com.ezen.myProject.handler.PagingHandler;
 import com.ezen.myProject.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +41,18 @@ public class BoardController {
 	}
 	
 	@GetMapping("/list")
-	public String list(Model model) {
-		List<BoardVO> list = bsv.getList();
+	public String list(Model model, PagingVO pgvo) {
+		log.info(">>> PagingVO >>" + pgvo); //널 같은거 신경쓰지 않아도 알아서 할것임
+		//getList(pgvo); //수정
+//		List<BoardVO> list = bsv.getList();
+		List<BoardVO> list = bsv.getList(pgvo); //리스트를 받아서 ph? 처리 함?
 		log.info(">>> getList >>"+list);
 		model.addAttribute("list", list); //셋어트리뷰트와 같은 역할 것
+		int totalCount = bsv.getTotalCount(pgvo); //등록
+		log.info("토탈카운트 "+totalCount);
+		PagingHandler ph = new PagingHandler(pgvo, totalCount); //ph는 여기 잇는데???
+		log.info("ph는 "+ph);
+		model.addAttribute("ph",ph);
 		return "/board/list"; //내가? 갈곳은 리스트입니당~
 	}
 	
