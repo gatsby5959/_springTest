@@ -85,10 +85,17 @@
 
 <script type="text/javascript">
 const bnoVal = `<c:out value = "${bvo.bno}"/>`;
+const writerVal = `<c:out value = "${bvo.writer}"/>`;
+// const commentwriterVal = `<c:out value = "${cvo.writer}"/>`;
+const sesid = `<c:out value = "${ses.id}"/>`;
+
 console.log(bnoVal);
 </script>
 <script type="text/javascript" src="/resources/js/boardComment.js"></script><!-- 해당위치에 넣어주기 -->
 
+<script>
+getCommentList(bnoVal);
+</script>
 
 <jsp:include page="../layout/footer.jsp"></jsp:include>
 

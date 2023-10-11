@@ -7,6 +7,17 @@
   	insert into comment (bno, writer, content)
   	values(#{bno}, #{writer}, #{content})
   </insert>
+  <select id= "getList" resultType="com.ezen.myProject.domain.CommentVO">
+  	select * from comment where bno = #{bno} order by cno desc;
+  </select>
+  
+  <update id = "update">
+  	update comment set content = #{content} where cno = #{cno}
+  </update>
+  
+	<delete id="delete" parameterType="int">
+		DELETE FROM comment WHERE cno = #{cno}
+	</delete>
   
   </mapper>
   

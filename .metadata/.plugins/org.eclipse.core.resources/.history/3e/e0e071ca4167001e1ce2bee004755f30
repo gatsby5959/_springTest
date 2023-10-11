@@ -1,8 +1,0 @@
-package com.ezen.myProject;
-
-import org.springframework.test.context.ContextConfiguration;
-
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml") //디비정보가 있는 컨텍스트
-public class BoardTest {
-
-}
