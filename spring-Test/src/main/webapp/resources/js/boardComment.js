@@ -186,7 +186,8 @@ document.addEventListener('click',(e)=>{
         };
         let cmtDeleteData={
             cno : cnoVal, //얘가 가는 것
-            content :  textContent
+            content :  textContent,
+            writer : writerVal
         };
         console.log(cmtModData);
         //서버연결
@@ -203,47 +204,44 @@ document.addEventListener('click',(e)=>{
          //내가 선택한 타겟과 가장 가까운 li찾기
          let li = e.target.closest('li');
          let cnoVal = li.dataset.cno;
-        
+         let writerVal = li.dataset.writer;
    
-         console.log("세션아이디"+sessionStorage.writer);
-         console.log("작성아이디"+li.dataset.writer);
-        if(sessionStorage.writer == li.dataset.writer)
-            {
+         console.log("세션아이디"+ sesid);
+         console.log("댓글 작성아이디"+ writerVal);
+        if(sesid == writerVal){
             //서버연결
             removeCommentToServer(cnoVal).then(result=>{
-                console.log("리절트값은 "+ result);
+                console.log("댓글삭제removeCommentToServer함수 진입 리절트값은 "+ result);
                 if(result == 1){
                     alert('댓글 삭제 성공~!!');
                 }
                 getCommentList(bnoVal);
-            })
-            }else{
+        })}else{
                 alert('작성자만 삭제 가능합니다. 댓글 삭제 실패~!!');
-            }
+        }
     }
 })
 
 
 
 
-async function deleteCommentToServer(cmtDeleteData){
-    try {
-        const url = '/comment/delete'+cmtDeleteData.cno;//달고가기        //포스트처럼 에디트 포스트 달고 가도 됩니다
-        const config = {
-            method : 'put', //풋은 수정할떄 달고가는 메서드인데.... 뭐 그냥 삭제할떄도 달고갔네
-            headers: {
-                'content-type':'application/json; charset=utf-8'
-            },
-            body:JSON.stringify(cmtDeleteData)
-        };
-        const resp = await fetch(url, config);
-        const result = await resp.text(); //isOk
-        return result;
-    
-    } catch (err) {
-        console.log(err);
-    }
-}
+// async function deleteCommentToServer(cmtDeleteData){
+//     try {
+//         const url = '/comment/delete'+cmtDeleteData.cno;//달고가기        //포스트처럼 에디트 포스트 달고 가도 됩니다
+//         const config = {
+//             method : 'put', //풋은 수정할떄 달고가는 메서드인데.... 뭐 그냥 삭제할떄도 달고갔네
+//             headers: {
+//                 'content-type':'application/json; charset=utf-8'
+//             },
+//             body:JSON.stringify(cmtDeleteData)
+//         };
+//         const resp = await fetch(url, config);
+//         const result = await resp.text(); //isOk
+//         return result; 
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
 
 
 
