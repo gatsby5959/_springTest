@@ -224,7 +224,7 @@ document.addEventListener('click',(e)=>{
 
 
 
-
+//안씀-----S
 // async function deleteCommentToServer(cmtDeleteData){
 //     try {
 //         const url = '/comment/delete'+cmtDeleteData.cno;//달고가기        //포스트처럼 에디트 포스트 달고 가도 됩니다
@@ -242,6 +242,8 @@ document.addEventListener('click',(e)=>{
 //         console.log(err);
 //     }
 // }
+//test중
+//안씀-----E
 
 
 
