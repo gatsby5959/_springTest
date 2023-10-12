@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ezen.myProject.domain.CommentVO;
+import com.ezen.myProject.domain.MemberVO;
 import com.ezen.myProject.service.CommentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -73,33 +74,49 @@ public class CommentController {
 	//수정관련  //받는것  cno로 준걸 cno로 받음  // 받는것 
 	@PutMapping(value="/{cno}", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> edit(@PathVariable("cno")int cno, 
-			@RequestBody CommentVO cvo){ 
+			@RequestBody CommentVO cvo, HttpServletRequest req){ 
 		//isok만 뜰껏임  //보내는?
-		log.info("컨트롤러진입" +cno + cvo);
-		int isOk = csv.edit(cvo);
+		log.info("컨트롤러진입" +cno +" "+ cvo);
+		HttpSession ses = req.getSession();
+		MemberVO mvo = (MemberVO)ses.getAttribute("ses");
+		int isOk= 0;
+		if(ses != null) {
+			mvo =(MemberVO)ses.getAttribute("ses");
+			if(mvo.getId().equals(cvo.getWriter())) {
+				isOk = csv.edit(cvo);
+			}else {
+				return new ResponseEntity<String>("2", HttpStatus.OK);
+			}
+		}
+//		int isOk = csv.edit(cvo);
 		return isOk > 0? new ResponseEntity<String>("1", HttpStatus.OK)
 				: new ResponseEntity<String>("0",HttpStatus.INTERNAL_SERVER_ERROR);
-	}  
-	
+	} 
+
 	
 	
 	//삭제관련  
 //	@PutMapping(value="/delete{cno}", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
-	
-	@DeleteMapping(value="/{cno}", produces = MediaType.TEXT_PLAIN_VALUE) 
-	public ResponseEntity<String> delete(@PathVariable("cno")int cno){ 
-		log.info("댓글 컨트롤러 진입" +cno );
-
-	
+	                                 //들어오는 데이터 없으니 conumes없어도 됨  나가는 값 있으니 produces는 있으니 적어돔
+	@DeleteMapping(value="/{cno}/{writer}", produces = MediaType.TEXT_PLAIN_VALUE) 
+	public ResponseEntity<String> delete(@PathVariable("cno")int cno,
+			@PathVariable("writer")String writer ,HttpServletRequest req ){ 
 		
+		log.info("댓글 컨트롤러 진입 cno >> " +cno+" writer >"+writer );
 		
-		
-		int isOk = csv.delete(cno);
-		return isOk > 0? new ResponseEntity<String>("1", HttpStatus.OK)
-				: new ResponseEntity<String>("0",HttpStatus.INTERNAL_SERVER_ERROR);
-	}  
-	
-	
+		int isOk = 0;
+		HttpSession ses = req.getSession();
+		if(ses != null) {
+			MemberVO mvo = (MemberVO)ses.getAttribute("ses");
+			if(mvo.getId().equals(writer)) {
+				isOk = csv.remove(cno);
+			}else {
+				return new ResponseEntity<String>("2",HttpStatus.OK);
+			}
+		}
+		return isOk > 0 ? new ResponseEntity<String>("1", HttpStatus.OK)
+				: new ResponseEntity<String>("0",HttpStatus.INTERNAL_SERVER_ERROR);  //아니면 스트링값을 0 주고 서버에러값 넣어줌
+	}
 
 }
 

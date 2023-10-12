@@ -87,12 +87,10 @@
 const bnoVal = `<c:out value = "${bvo.bno}"/>`;
 const writerVal = `<c:out value = "${bvo.writer}"/>`;
 // const commentwriterVal = `<c:out value = "${cvo.writer}"/>`;
-const sesid = `<c:out value = "${ses.id}"/>`;
-
-console.log(bnoVal);
+const sesId = `<c:out value = "${ses.id}"/>`; //js로 보내버림
+console.log("bnoVal은 "+bnoVal+" /  sesId는 "+sesId);
 </script>
 <script type="text/javascript" src="/resources/js/boardComment.js"></script><!-- 해당위치에 넣어주기 -->
-
 <script>
 getCommentList(bnoVal);
 </script>

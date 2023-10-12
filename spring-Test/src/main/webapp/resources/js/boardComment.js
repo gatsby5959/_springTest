@@ -1,7 +1,7 @@
 
 console.log(bnoVal);
 console.log("jsp에서 javascript로 쏴준 작성자명 "+  writerVal);
-console.log("sesid는  " + sesid );
+console.log("sesId는  " + sesId );
 // console.log("commentwriterVal(댓글작성자)는 "+  commentwriterVal );
 // commentwriterVal = `<c:out value = "${cvo.writer}"/>`;
 // console.log("댓글작성자)는 "+  ${cvo.writer} );
@@ -96,7 +96,7 @@ function getCommentList(bno){
                 li+=`<div>${cvo.writer}</div>`;//
                 li+=`<input type="text" id="cmtTextMod" value="${cvo.content}"><div>`;
                 li+=`<span>${cvo.regdate}</span>`;
-                if(sesid == cvo.writer){
+                if(sesId == cvo.writer){
                 li+=`<button type="button" class="modBtn">%</button>`;
                 li+=`<button type="button" class="delBtn">X</button>`;
                 }
@@ -149,9 +149,9 @@ async function editCommentToServer(cmtModData){
 
 
 
-async function removeCommentToServer(cno){
+async function removeCommentToServer(cno, writer){
     try {
-        const url = '/comment/'+cno;
+        const url = '/comment/'+cno+'/'+writer;
         const config = {
             method:'delete'
         };
@@ -194,6 +194,8 @@ document.addEventListener('click',(e)=>{
         editCommentToServer(cmtModData).then(result=>{
             if(result == 1){
                 alert('댓글 수정 성공~!!');
+            }else if(result == 2 ){
+                alert('사용자가 일치하지 않습니다.~!!');
             }
             getCommentList(bnoVal);
         })
@@ -202,18 +204,20 @@ document.addEventListener('click',(e)=>{
         //삭제작업
         console.log('삭제버튼 클릭됨~!!');
          //내가 선택한 타겟과 가장 가까운 li찾기
-         let li = e.target.closest('li');
+         let li = e.target.closest('li'); 
          let cnoVal = li.dataset.cno;
          let writerVal = li.dataset.writer;
    
-         console.log("세션아이디"+ sesid);
+         console.log("세션아이디"+ sesId);
          console.log("댓글 작성아이디"+ writerVal);
-        if(sesid == writerVal){
+        if(sesId == writerVal){
             //서버연결
             removeCommentToServer(cnoVal).then(result=>{
                 console.log("댓글삭제removeCommentToServer함수 진입 리절트값은 "+ result);
                 if(result == 1){
                     alert('댓글 삭제 성공~!!');
+                }else if(result == 2 ){
+                    alert('사용자가 일치하지 않습니다.~!!');
                 }
                 getCommentList(bnoVal);
         })}else{

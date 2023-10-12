@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ezen.myProject.domain.BoardVO;
@@ -32,13 +33,25 @@ public class BoardController {
 		return "/board/register";   //.jsp안써도 됨 서블릿컨텍스트.xml에서 설정잇음
 	}
 	
+//	@PostMapping("/register")
+//	public String register(BoardVO bvo) {
+//		log.info(">>>>>>"+bvo.toString());
+//		int isOk = bsv.register(bvo);
+//		log.info(">>>> board register >>" + (isOk>0? "OK":"FAIL"));
+//		return "redirect:/board/list";
+//	}
+	
+	//required는 필수 값은 아니라는 뜻 널 들어와도 그냥 이해해라 라느 ㄴ뜻 예외 밸생 안함
 	@PostMapping("/register")
-	public String register(BoardVO bvo) {
+	public String register(BoardVO bvo,
+			@RequestParam(name="files", required = false)MultipartFile[] files) {// 첨부파일관련 추가 //register.jsp에 input에 name이 files있음
 		log.info(">>>>>>"+bvo.toString());
-		int isOk = bsv.register(bvo);
-		log.info(">>>> board register >>" + (isOk>0? "OK":"FAIL"));
+		log.info(">>>> files >>"+ files.toString());
+//		int isOk = bsv.register(bvo);
+//		log.info(">>>> board register >>" + (isOk>0? "OK":"FAIL"));
 		return "redirect:/board/list";
 	}
+	
 	
 	@GetMapping("/list")
 	public String list(Model model, PagingVO pgvo) {
