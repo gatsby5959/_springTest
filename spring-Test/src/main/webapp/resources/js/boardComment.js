@@ -212,7 +212,7 @@ document.addEventListener('click',(e)=>{
          console.log("댓글 작성아이디"+ writerVal);
         if(sesId == writerVal){
             //서버연결
-            removeCommentToServer(cnoVal).then(result=>{
+            removeCommentToServer(cnoVal,writerVal).then(result=>{
                 console.log("댓글삭제removeCommentToServer함수 진입 리절트값은 "+ result);
                 if(result == 1){
                     alert('댓글 삭제 성공~!!');

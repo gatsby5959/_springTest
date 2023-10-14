@@ -45,15 +45,21 @@ springUser@localhost identified by 'mysql';
 flush privileges
 
 
+----------------------
+
+use springtest;
+
+--------------------
+
 게시판 생성
 create table board(
 bno int not null auto_increment,
 title varchar(200),
 content text,
 writer varchar(100),
-isDel varhcar(10) default 'N',
+isDel varchar(10) default 'N',
 registerDate datetime default now(),
-read_count int,
+read_count int default 0,
 primary key(bno));
 
 CREATE TABLE `board` (
