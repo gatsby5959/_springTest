@@ -51,6 +51,11 @@ public class CommentController {
 		log.info(">>>>>cvo >>> "+cvo);
 		//DB연결
 		int isOk = csv.post(cvo);
+		
+		//231013추가시 코멘트 올리기
+		int isOk2 = csv.commentcountup(cvo);
+		
+		
 		//리턴스 response의 통신 상태를 같이 리턴
 		return isOk > 0 ? //삼항연산자  스트링 보내려고 함
 				new ResponseEntity<String>("1",HttpStatus.OK) //서버가 정상이라 스트링 1 보냄

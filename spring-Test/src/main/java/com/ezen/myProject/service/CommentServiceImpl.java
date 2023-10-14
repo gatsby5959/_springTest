@@ -47,4 +47,10 @@ public class CommentServiceImpl implements CommentService{
 		// TODO Auto-generated method stub
 		return cdao.delete(cno);
 	}
+
+	@Override
+	public int commentcountup(CommentVO cvo) {
+		// TODO Auto-generated method stub
+		return cdao.commentcountup(cvo);
+	}
 }

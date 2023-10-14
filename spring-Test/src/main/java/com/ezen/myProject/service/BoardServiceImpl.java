@@ -6,9 +6,12 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.ezen.myProject.domain.BoardDTO;
 import com.ezen.myProject.domain.BoardVO;
+import com.ezen.myProject.domain.FileVO;
 import com.ezen.myProject.domain.PagingVO;
 import com.ezen.myProject.repository.BoardDAO;
+import com.ezen.myProject.repository.FileDAO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,11 +21,43 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Inject
 	private BoardDAO bdao;
+	
+	@Inject
+	private FileDAO fdao;
 
 	@Override
-	public int register(BoardVO bvo) {
-		log.info("register check 2 "+bvo);
-		return bdao.insert(bvo);
+	public int register(BoardDTO bdto) {
+		log.info("register check 2 "+bdto); //여기서 2개 나눠줘야함
+		//기존 게시글에 대한 내용을 DB에 저장 같은 내용을 저장
+		int isOk = bdao.insert(bdto.getBvo());
+		//------- 파일 저장 라인
+		if(bdto.getFlist()==null) {
+			//파일 값이 null이면 저장 없음.
+			isOk *= 1; //성공한 것으로 침
+		}else {
+			//bvo의 값이 들어가고, 파일의 개수가 있다면...
+			if(isOk > 0 && bdto.getFlist().size()>0) {
+				//fvo의 bno는 아직 설정되기 전.
+				//현재 시점에서 bno는 아직 결정되지 않음. ==> db insert ai의 의해 자동 생성
+				int bno = bdao.selectBno(); //방금 저장된 bno가져오기
+				//flit의 모든 fileVO에 방금 가져온 bno를 set
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno); // 같은 번호를 가짐
+					log.info(">>> fvo >> " + fvo);
+					//파일 저장
+					isOk *= fdao.insertFile(fvo);
+					
+//					fdao.countupinsertFile(fvo); //231013			
+				}
+//				log.info("> bdto.getBvo()는 " + bdto.getBvo());
+				log.info("> bdto.getBvo()에 없는! 방금생성된 bno는 따로 불러와서 이거임--->" + bno);
+				log.info("> 파일의 갯수는 " + bdto.getFlist().size());
+//				fdao.countupinsertFile3(bdto.getBvo(),bdto.getFlist().size());
+				fdao.countupinsertFile4(bno,bdto.getFlist().size());
+//				fdao.countupinsertFile2(fvo,);
+			}
+		}
+		return isOk;
 	}
 
 //	@Override
@@ -64,6 +99,12 @@ public class BoardServiceImpl implements BoardService {
 		// TODO Auto-generated method stub
 		return bdao.remove(bno);
 	}
+
+//	@Override
+//	public void boardcountupdate() {
+//		// TODO Auto-generated method stub
+//		 bdao.boardcountupdate();
+//	}
 
 
 

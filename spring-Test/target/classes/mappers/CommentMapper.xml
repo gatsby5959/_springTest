@@ -20,6 +20,15 @@
 	<delete id="delete" parameterType="int">
 		DELETE FROM comment WHERE cno = #{cno}
 	</delete>
+	
+	<select id="cmttotalcount" parameterType="int">
+		select count(cno) from board;
+	</select>
+	
+	<update id = "commentcountup">
+  	update board set commentcount = commentcount + 1 where bno = #{bno}
+ 	</update>
+	
   
   </mapper>
   

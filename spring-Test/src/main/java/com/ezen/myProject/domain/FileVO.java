@@ -7,8 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-
-
 //create table file(
 //uuid varchar(256) not null,
 //save_dir varchar(256) not null,
@@ -18,7 +16,6 @@ import lombok.ToString;
 //file_size int,
 //reg_date datetime default now(),
 //primary key(uuid));
-
 
 @NoArgsConstructor
 @AllArgsConstructor

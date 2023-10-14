@@ -1,5 +1,6 @@
 package com.ezen.myProject.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ezen.myProject.domain.BoardDTO;
 import com.ezen.myProject.domain.BoardVO;
+import com.ezen.myProject.domain.FileVO;
 import com.ezen.myProject.domain.PagingVO;
+import com.ezen.myProject.handler.FileHandler;
 import com.ezen.myProject.handler.PagingHandler;
 import com.ezen.myProject.service.BoardService;
 
@@ -24,6 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/board/*")
 @Controller
 public class BoardController {
+	@Inject
+	private FileHandler fhd;
+	
 
 	@Inject  //new로 객체 생성의미 (autowired써도 됨)  원래 제공하는 건 bean   인젝터나 오토와이더느는 사용자가 의도적으로 만든것 어자피 둘다 같은 의미임
 	private BoardService bsv;
@@ -41,15 +48,31 @@ public class BoardController {
 //		return "redirect:/board/list";
 //	}
 	
-	//required는 필수 값은 아니라는 뜻 널 들어와도 그냥 이해해라 라느 ㄴ뜻 예외 밸생 안함
+	//required는 필수 값은 아니라는 뜻 널 들어와도 그냥 이해해라 라느 ㄴ뜻 예외 밸생 안함 //231012
 	@PostMapping("/register")
 	public String register(BoardVO bvo,
 			@RequestParam(name="files", required = false)MultipartFile[] files) {// 첨부파일관련 추가 //register.jsp에 input에 name이 files있음
 		log.info(">>>>>>"+bvo.toString());
-		log.info(">>>> files >>"+ files.toString());
-//		int isOk = bsv.register(bvo);
-//		log.info(">>>> board register >>" + (isOk>0? "OK":"FAIL"));
+		log.info(">>>> files >>"+ files);
+		List<FileVO>flist = null;
+		
+		//files가 null일수 있음 첨부파일이 있는 경우면 fhd호출
+		if(files[0].getSize()>0) {
+			//첫번째 파일의 size가 0보다 크다면...
+			//flist에 파일 객체 담기
+			flist = fhd.uploadFiles(files);
+		}else {
+			log.info("file null");
+		}
+		
+		BoardDTO bdto = new BoardDTO(bvo, flist);  //bvo랑 flist담기
+		
+		int isOk = bsv.register(bdto);
+	
+		log.info(">>>> board register >>" + (isOk>0? "OK":"FAIL"));
+	
 		return "redirect:/board/list";
+	
 	}
 	
 	
@@ -59,6 +82,7 @@ public class BoardController {
 		//getList(pgvo); //수정
 //		List<BoardVO> list = bsv.getList();
 		List<BoardVO> list = bsv.getList(pgvo); //리스트를 받아서 ph? 처리 함?
+//		bsv.boardcountupdate(); //보드테이블 댓글갯수 파일갯수 업데이트용; //jgh231013
 		log.info(">>> getList >>"+list);
 		model.addAttribute("list", list); //셋어트리뷰트와 같은 역할 것
 		int totalCount = bsv.getTotalCount(pgvo); //등록

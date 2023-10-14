@@ -30,6 +30,8 @@ public class BoardVO {
 	private String isDel;
 	private String registerDate;
 	private int read_count;
+	private int commentCount; //231013추가
+	private int fileCount; //231013추가
 	
 
 }

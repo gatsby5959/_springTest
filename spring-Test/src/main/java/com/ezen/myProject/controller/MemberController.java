@@ -47,9 +47,11 @@ public class MemberController {
 		return "/member/login";
 	}
 
-	@PostMapping("/login")
-	public String loginPost(MemberVO mvo, HttpServletRequest request, Model m) {
+	@PostMapping("/login") //로그인 창에서 아이디 암호를 치고 버튼 클릭하면 동작
+	public String loginPost(MemberVO mvo, HttpServletRequest request, Model m) { //이미 관련 클랙스 대기중 변수값만 맞으면 탁탁 찾아서 맞춰줌 스프링 똘똘
 		log.info(">>> 로그인 사용자 >> " + mvo);
+		log.info(">>> HttpServletRequest >> " + request);
+		log.info(">>> Model >> " + m);
 		//mvo 객체를 db에서 일치하는지 체크(를 해가지고 올께요)
 		MemberVO loginmvo = msv.isUser(mvo);
 		
