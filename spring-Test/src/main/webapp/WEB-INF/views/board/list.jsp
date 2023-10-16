@@ -51,6 +51,8 @@
 	<th>작성자</th>
 	<th>작성일</th>
 	<th>조회수</th>
+	<th>댓글수</th><!-- 231016추가 -->
+	<th>파일수</th><!-- 231016추가 -->
 </tr>
 </thead>
 <tbody>
@@ -61,6 +63,8 @@
 		<td>${bvo.writer }</td>
 		<td>${bvo.registerDate }</td>
 		<td>${bvo.read_count }</td>
+		<td>${bvo.commentCount }</td> <!-- 231016추가 -->
+		<td>${bvo.fileCount }</td><!-- 231016추가 -->
 	</tr>
 </c:forEach>
 </tbody>

@@ -100,6 +100,46 @@ public class BoardServiceImpl implements BoardService {
 		return bdao.remove(bno);
 	}
 
+	@Override
+	public BoardDTO getDetailFile(int bno) {
+		// detail bvo, file 같이 가져오기.
+		bdao.readCount(bno, 1); //리드카운트 올리기
+		BoardDTO bdto = new BoardDTO();
+		bdto.setBvo(getDetail(bno));	//bdao bvo호출
+		bdto.setFlist(fdao.getFileList(bno));	//bdao bvo호출
+		return bdto;
+	}
+
+
+	@Override
+	public int removefile(String uuid) {
+		return fdao.removefile(uuid);
+	}
+
+	@Override
+	public int modifyFile(BoardDTO bdto) {
+		// TODO Auto-generated method stub
+		log.info("ttttttttttttt   ",bdto.getBvo().getBno());
+		bdao.readCount(bdto.getBvo().getBno(), -2);
+		log.info("bdto는 "+bdto);
+		log.info("파일갯수"+bdto.getBvo().getFileCount());
+		int isOk = bdao.update(bdto.getBvo()); //기존 bvo update
+		if(bdto.getFlist()==null) {
+			isOk *= 1;
+		}else {
+			if(isOk > 0   &&    bdto.getFlist().size()>0) {
+				int bno = bdto.getBvo().getBno();
+				//모든 fvo에 bno set
+				for(FileVO fvo : bdto.getFlist()) {
+					fvo.setBno(bno);
+					isOk *= fdao.insertFile(fvo);
+				}
+			}
+		}
+		return isOk;
+	}
+
+
 //	@Override
 //	public void boardcountupdate() {
 //		// TODO Auto-generated method stub

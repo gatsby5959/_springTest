@@ -4,10 +4,18 @@ import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ezen.myProject.domain.BoardDTO;
 import com.ezen.myProject.domain.BoardVO;
 import com.ezen.myProject.domain.FileVO;
+import com.ezen.myProject.domain.MemberVO;
 import com.ezen.myProject.domain.PagingVO;
 import com.ezen.myProject.handler.FileHandler;
 import com.ezen.myProject.handler.PagingHandler;
@@ -93,32 +102,66 @@ public class BoardController {
 		return "/board/list"; //내가? 갈곳은 리스트입니당~
 	}
 	
+	
+	
 	@GetMapping({"/detail","/modify"})// jsp에서 ? 전까지 잘라서 딱 맞는거 찾음
-	public void detail(Model model, @RequestParam("bno")int bno) { // 이건 왔던 곳으로 다시 가라 라는 뜻
+	public void detail(Model model, @RequestParam("bno") int bno) { // 이건 왔던 곳으로 다시 가라 라는 뜻
 		log.info(">>>> detail bno >> " + bno);
 		log.info("모디파이나 디테일이 겟을 탐");
-		
-		BoardVO bvo = bsv.getDetail(bno);
-		model.addAttribute("bvo", bvo);
+		//파일내용도 포함해서 같이 가져가야 함.
+//		BoardVO bvo = bsv.getDetail(bno);
+		BoardDTO bdto = bsv.getDetailFile(bno);
+		log.info("bdto는 " + bdto);
+		model.addAttribute("boardDTO", bdto);
 	}
 	
 	//수정할 때 들어가는 부당 read_count 2개 빼주기
 	@PostMapping({"/modify"})
-	public String modify(BoardVO bvo, RedirectAttributes reAttr) {
+	public String modify(BoardVO bvo, RedirectAttributes reAttr,
+			@RequestParam(name="files", required=false)MultipartFile[] files) {
 		log.info("모디파이가 포스트를 탐");
 		log.info(">>>> modify bvo >> " + bvo);
-		int isOk = bsv.modify(bvo);
+		
+		
+		
+		List<FileVO> flist = null;
+		if(files[0].getSize()>0) {
+			//기존 파일은 이미 DB에 등록완료 삭제할 파일은 비동기로 이미 삭제 완료
+			//새로 추가할 파일만 추가 
+			//file이 존재함
+			flist = fhd.uploadFiles(files); //fvo 구성 List로 리턴
+//			bvo.setFileCount(flist.size());
+		}
+		log.info(">>>> flist.length >> " + files.length);
+		BoardDTO bdto = new BoardDTO(bvo,flist);
+		log.info("bdto = {}", bdto);
+		int isOk = bsv.modifyFile(bdto);
+//		int isOk = bsv.modify(bvo);
+		
 //		log.info(">>>> board modify >> "+ (isOk>0? "OK" : "FAIL"));
 //		reAttr.addFlashAttribute(null, reAttr);
 		return "redirect:/board/detail?bno="+bvo.getBno();
 	}
 	
+
+
 	@GetMapping({"/remove"})
 	public String remove(@RequestParam("bno")int bno, RedirectAttributes reAttr) {
 		log.info(">>> remove bno >>" + bno);
 		int isOk = bsv.remove(bno);
 		reAttr.addFlashAttribute("isOk", isOk);
 		return "redirect:/board/list";
+	}
+	
+	@DeleteMapping(value="/file/{uuid}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> removeFile(@PathVariable("uuid")String uuid ){
+		
+		log.info(">>> uuid >>" + uuid);
+		int isOk = 0;
+			isOk = bsv.removefile(uuid);
+		return isOk > 0 ? new ResponseEntity<String>("1", HttpStatus.OK): 
+			new ResponseEntity<String>("0",HttpStatus.INTERNAL_SERVER_ERROR);  //아니면 스트링값을 0 주고 서버에러값 넣어줌
+	
 	}
 	
 }

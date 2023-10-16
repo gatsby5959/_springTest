@@ -6,8 +6,8 @@
   <mapper namespace="com.ezen.myProject.repository.BoardDAO">
   
      <insert id="insert" parameterType="com.ezen.myProject.domain.BoardVO">
-        insert into board(title,writer,content)
-        values(#{title},#{writer},#{content})
+        insert into board(title,writer,content ,fileCount)
+        values(#{title},#{writer},#{content}, #{fileCount})
      </insert>
      
      <select id="selectBno" resultType="int">
@@ -43,7 +43,8 @@
 	</update>
 	
 	<update id = "update" parameterType = "com.ezen.myProject.domain.BoardVO">
-		update board set title = #{title}, content=#{content} where bno= #{bno};
+		update board set title = #{title}, content=#{content}, fileCount = (select count(uuid) from file where bno = #{bno})
+		 where bno= #{bno};
 	</update>
 	
 	<update id = "remove" parameterType = "com.ezen.myProject.domain.BoardVO">

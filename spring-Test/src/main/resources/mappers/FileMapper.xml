@@ -11,12 +11,19 @@
 	  </insert>
 	  
 	  <update id = "countupinsertFile"><!-- 231013 -->
-	  update board set fileCount = fileCount + 1 where bno = #{bno}
+	  	update board set fileCount = fileCount + 1 where bno = #{bno}
 	  </update>
 	  
 	  <update id = "countupinsertFile4"><!-- 231013 -->
-	  update board set fileCount = #{size} where bno = #{bno}
+	  	update board set fileCount = #{size} where bno = #{bno}
 	  </update>
 	  
+	  <select id = "getFileList" resultType="com.ezen.myProject.domain.FileVO">
+	  	select * from file where bno = #{bno}
+	  </select>
+	  
+	  <delete id = "removefile">
+		DELETE FROM file WHERE uuid = #{uuid}
+	  </delete>
 	  
   </mapper>
